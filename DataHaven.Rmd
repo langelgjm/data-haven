@@ -1,0 +1,471 @@
+---
+title: "Data Haven Well-Being Analysis"
+author: "Gabriel J. Michael, Ph.D., gabriel.michael@yale.edu"
+date: "February 25, 2015"
+output: pdf_document
+---
+
+```{r setup, echo=FALSE, warning=FALSE, include=FALSE}
+# Test if necessary packages are installed, and load them
+required_packages <- c("car", "ggplot2", "polycor", "glmnet", "glmnetcr", "reshape2", "MASS")
+required_packages_test <- sapply(required_packages, require, character.only=TRUE)
+if (any(ifelse(required_packages_test, FALSE, TRUE))) {
+  stop(paste("Missing package", required_packages[! required_packages_test], "\n"))
+} else {
+  print("Loaded all required packages.\n")
+} 
+
+# Read data; the response-level data is not publicly available
+dh <- read.csv("~/Documents/_Works in Progress/DataHaven/DataHavenWeight.csv")
+# Recode/transform on a copy called dhr, and leave dh intact
+dhr <- dh
+
+# Continuous variables need to be handled individually while inspecting histograms, etc. for outliers or errors
+dhr$age[dhr$age==0] <- NA
+dhr$q16[dhr$q16 %in% c(998,999)] <- NA
+dhr$q17[dhr$q17 %in% c(998,999)] <- NA
+dhr$q23[dhr$q23 %in% c(998,999)] <- NA
+# The only entries above 84 are three 99s, which I assume are data entry errors
+# However the BMI variable has already ignored these and need not be altered
+dhr$q24[dhr$q24 %in% c(99,998,999)] <- NA
+dhr$q29[dhr$q29 %in% c(998,999)] <- NA
+dhr$q33[dhr$q33 %in% c(98,99)] <- NA
+dhr$q37[dhr$q37 %in% c(998,999)] <- NA
+dhr$q46[dhr$q46==99] <- NA
+dhr$q52[dhr$q52==99] <- NA
+dhr$q53[dhr$q53==9] <- NA
+dhr$q62[dhr$q62==999] <- NA
+dhr$q68[dhr$q68==99] <- NA
+
+# Ensure categorical variables are factors
+dhr$q13[dhr$q13 %in% c(7,9)] <- NA
+dhr$racer[dhr$racer==9] <- NA
+dhr$q45[dhr$q45==9] <- NA
+# Excluding race_mX and q66_mX variables
+cat_cols <- c("nhood", "nhoodint", "q60", "q67", "q26", "q45", "q54", "racer", "q13", "llcell", "phonetyp", "ring")
+dhr[cat_cols] <- lapply(dhr[cat_cols], as.factor)
+
+# Recode dummy variables to have levels 0 (no) and 1 (yes), rather than 1 (yes) and 2 (no)
+dummy_cols <- c("q1", "q5", "q6", "q7", "q9", "q10", "q18a", "q18b", "q18c", "q18d", "q25", "q27", "q28", "q31", "q41", "q42", "q48", "q49", "q50", "q51", "q55", "hisp", "q59", "q61", "q69", "q70", "gender", "q22a", "q22b", "q22c", "q22d", "q22e", "q34", "q35", "q38", "q43a", "q43b", "q43c", "q43d",   "q65")
+recode_dummy <- function(x) {
+  recode(x, "2=0;1=1;else=NA", as.factor.result=TRUE)
+}
+dhr[dummy_cols] <- lapply(dhr[dummy_cols], recode_dummy)
+
+# Recode 3 value ordinal variables
+dhr$q3 <- ordered(recode(dhr$q3, "3=1;2=2;1=3;else=NA", as.factor.result=TRUE))
+
+# Recode 4 value ordinal variables
+ord4_cols <- c("q4a", "q4b", "q4c", "q4d", "q4e", "q4f", "q4g", "q4h", "q4i", "q4j", "q4k", "q4l", "q8", "q11", "q14a", "q14b", "q14c", "q14d", "q14e", "q14f", "q14g", "q14h", "q20a", "q20b", "q20c", "q40", "q47a", "q47b", "q47c", "q71")
+recode4 <- function(x) {
+  ordered(recode(x, "4=1;3=2;2=3;1=4;else=NA", as.factor.result=TRUE))
+}
+dhr[ord4_cols] <- lapply(dhr[ord4_cols], recode4)
+
+# Recode 5 value ordinal variables
+ord5_cols <- c("q2", "q12", "q19", "q21", "q30", "q32", "q39")
+recode5 <- function(x) {
+  ordered(recode(x, "5=1;4=2;3=3;2=4;1=5;else=NA", as.factor.result=TRUE))
+}
+dhr[ord5_cols] <- lapply(dhr[ord5_cols], recode5)
+
+# Other recoding tasks
+dhr$q36[dhr$q36 %in% c(8,9)] <- NA
+dhr$q36 <- ordered(dhr$q36)
+dhr$income[dhr$income==9] <- NA
+dhr$income <- ordered(dhr$income)
+dhr$educ[dhr$educ==9] <- NA
+dhr$educ <- ordered(dhr$educ)
+
+# Rename columns to meaningful names
+colnames(dhr) <- c("state", "zip", "county", "paq", "safe", "int51", "ctres", "int54", "town", "int57", "buscell", "int55", "sat_area", "area_change", "sat_change", "q4key", "healthcare_qual", "locgov_resp", "pubschool_qual", "pubfac_cond", "store_avail", "entertain_avail", "police", "affordable", "employment", "lowinc_progs", "elderly_supp", "children_raise", "volunteer", "volunteer2", "problem_fix", "locgov_infl", "donated", "voter", "arts", "address_time", "housing_type", "q14key", "store_dist", "walk_safety", "bicycle_safety", "pubtrans_sat", "rec_avail", "unsafe", "neighbors_helpful", "neighbors_trust", "byr1", "byr2", "age", "ager", "agesny", "pubtrans_rides", "pubtrans_dist_time", "q18key", "pubtrans_streets", "pubtrans_sidewalks", "pubtrans_dist", "pubtrans_safety", "car_access", "q20key", "org_fire", "org_school", "org_traffic", "health", "q22key", "high_bp", "high_cholest", "diabetes", "heart_disease", "asthma", "weight_lbs", "height_in", "health_ins", "health_ins_type", "has_dr", "health_visit", "hosp_emerg", "dentist_recent", "help_avail", "mood", "exercise", "food_money", "smoked", "smoke", "cigs", "smoke_quit", "fin_manage", "future_econ", "fin_parents", "opp_children", "q43key", "health_delay", "job_loss", "bill_late", "housing_money", "noinc_months", "marital", "num_children", "q47key", "childcare_cost", "childcare_avail", "childcare_qual", "children_school", "school_act", "children_act", "role_models", "num_adults", "family_meals", "info_source", "computer", "llcell", "phonetyp", "hisp", "race", "race_m2", "race_m3", "race_m4", "race_m5", "racer", "english", "language", "us_born", "years_us", "educ", "income", "pub_assist", "pub_assist_type1", "pub_assist_type2", "pub_assist_type3", "pub_assist_type4", "pub_assist_type5", "pub_assist_type6", "pub_assist_type7", "job", "nojob_months", "job_ft", "job_pt_choice", "job_sat", "nhood", "nhoodint", "gender", "ring", "racew", "weight", "q16r", "q17r", "q29r", "q33r", "q46r", "q53r", "bmi", "bmir", "q37r", "q52r", "q62r", "q68r", "nhoodr", "nhoodr2", "q4ar", "q4br", "q4cr", "q4dr", "q4er", "q4fr", "q4gr", "q4hr", "q4ir", "q4jr", "q4kr", "q4lr", "q5r", "q6r", "q7r", "q8r", "q9r", "q10r", "cescore")
+
+# Create some new squashed variables
+dhr$race_black <- recode(dhr$racer, "1=0;2=1;3=0;4=0;5=0;6=0;7=0;else=NA", as.factor.result=TRUE)
+dhr$partner <- recode(dhr$marital, "2=1;3=1;1=0;4=0;5=0;6=0;else=NA", as.factor.result=TRUE)
+dhr$job_binary <- recode(dhr$job, "1=1;2=0;3=0;4=0;5=0;6=0;7=0;else=NA", as.factor.result=TRUE)
+dhr$retired <- recode(dhr$job, "1=0;2=0;3=1;4=0;5=0;6=0;7=0;else=NA", as.factor.result=TRUE)
+dhr$volunteer3 <- ifelse(dhr$volunteer==1 | dhr$volunteer2==1, 1, 0)
+dhr$volunteer3 <- as.factor(dhr$volunteer3)
+
+# Find out which variables are missing many responses
+missing <- apply(dhr, 2, function(x) sum(is.na(x)))
+missing[missing >= 200]
+```
+
+We are interested in learning which variables are most important as predictors of well-being, where well-being is defined as a mix of the following:
+
+- Satisfaction with the city or area where you live (yes/no, Question 1)
+- Overall health (excellent, very good, good, fair or poor, Question 21)
+- Satisfaction with one's work, job, vocation, or daily tasks (completely satisfied, somewhat satisfied, not very satisfied, or not at all satisfied, Question 71)
+
+*A priori*, we would expect each of these questions to have different causal factors, and thus perhaps different useful predictors. Also, predictors may not identify causal factors. Thus, we first want to know the extent to which the responses to each of these three questions correlate. We assess this using measures of correlation for ordinal variables, as well as spine plots, which plot area as a function of the number of responses for a given combination of ordinal variable responses. Note that variables have been recoded so that larger values represent more positive responses.
+
+The correlation between satisfaction with living area and health is small:
+
+```{r wellbeing1}
+polychor(dhr$sat_area, dhr$health)
+spineplot(dhr$sat_area,dhr$health, xlab="Satisfaction with Living Area", ylab="Health")
+```
+
+The correlation between satisfaction with living area and job satisfaction is moderate:
+
+```{r wellbeing2}
+polychor(dhr$sat_area, dhr$job_sat)
+spineplot(dhr$sat_area,dhr$job_sat, xlab="Satisfaction with Living Area", ylab="Job Satisfaction")
+```
+
+So is the correlation between health and job satisfaction:
+
+```{r wellbeing3}
+polychor(dhr$health, dhr$job_sat)
+spineplot(dhr$health,dhr$job_sat, xlab="Health", ylab="Job Satisfaction")
+```
+
+There is also apparent non-normality in the responses for satisfaction with living area and job satisfaction, with relatively few responses expressing dissatisfaction. This will present a challenge for modeling. In contrast, health responses appear to be more normally distributed. The relatively weak correlations between these three questions suggest that we should not combine them into a single dependent variable.
+
+The remainder of this analysis assesses the factors most predictive of responses for each of these three questions.
+
+# Health
+
+In this section, we try to predict health as a function of some potentially relevant variables.
+
+There are a large number of variables we might expect to have some value in predicting the health response. This presents a challenging situation - we might expect that many of the potential predictor variables for health are likely to be correlated with one another. If we include all of these variables in a model, we won't be able to distinguish their effects, and effects might be split between highly correlated variables. Let's take a look to see the correlations between the many potentially health-relevant variables.
+
+```{r health_cor, echo=FALSE, warning=FALSE, results='hide'}
+health_cor_vars <- dhr[,c("income", "voter", "housing_type", "unsafe", "age", "bmi", "high_bp", "high_cholest", "diabetes", "heart_disease", "asthma", "health_ins", "has_dr", "health_visit", "hosp_emerg", "dentist_recent", "help_avail", "mood", "exercise", "smoked", "health_delay", "english", "race_black", "pub_assist", "health")]
+healthcor <- hetcor(health_cor_vars, use="pairwise.complete.obs")
+```
+
+We can visualize a correlation matrix between many variables using a heatmap, where lighter colors (yellow and white) represent higher correlations:
+
+```{r health_heatmap, echo=FALSE, warning=FALSE, results='hide'}
+healthcor$correlations
+par(cex.main=0.75)
+heatmap(healthcor$correlations, main="Correlation Matrix for Selected Health Variables")
+highly_cor_vars <- function(x, thresh=0.5) {
+  x[x==1] <- NA
+  arrind <- which(x>=thresh, arr.ind=TRUE)
+  t1 <- cbind(arrind, x[arrind])
+  t1[order(-t1[,3]),]
+}
+highly_cor_vars(healthcor$correlations)
+```
+
+As it turns out, no two variables have a correlation greater than or equal to 0.70, which is a rough cutoff point for assessing multicollinearity. In fact, the highest correlation is between the indicators for diabetes and high blood pressure, at 0.57.
+
+## Feature Selection
+
+We still have a large number of variables to choose from. In such a situation, we need a way to select usefully predictive variables while discarding less useful ones. I use the lasso, which eliminates variables when their coefficient estimates are sufficiently small. The following list reports the variables that will potentially be included in the model:
+
+```{r health_features, echo=FALSE, warning=FALSE}
+xy <- dhr[,c("income", "educ", "voter", "walk_safety", "bicycle_safety", "rec_avail", "unsafe", "age", "bmi", "high_bp", "high_cholest", "diabetes", "heart_disease", "asthma", "health_ins", "has_dr", "health_visit", "hosp_emerg", "dentist_recent", "help_avail", "mood", "exercise", "food_money", "smoked",  "num_children", "num_adults", "health_delay", "job_loss", "bill_late", "housing_money", "race_black", "hisp", "english", "health")]
+names(xy)
+```
+
+First, I divide the data into a training set and a test set; the training set will be used for model-building, and the test set for model validation. The training set consists of 696 responses randomly selected from the original dataset. Next, I fit a series of continuation ratio models, which are useful for predicting ordinal responses. The following graph shows the coefficient estimates for the series of models with increasing lasso penalties.
+
+```{r health_lasso, echo=FALSE, warning=FALSE}
+xy <- xy[complete.cases(xy),]
+set.seed(2)
+train <- sample(1:nrow(xy), round(nrow(xy)*0.75))
+test <- c(1:nrow(xy))
+test <- test[-train]
+x <- xy[train,1:(ncol(xy)-1)]
+y <- xy[train,"health"]
+# Standardize all non-factor as well as ordinal columns (i.e., all but dummies in this dataset)
+standardize_cols <- function(x) {
+  newx <- x
+  # Identify ordered colums
+  ordered_cols <- sapply(newx, is.ordered)
+  # Convert to integers (thereby assuming equal intervals)
+  newx[,ordered_cols] <- apply(newx[,ordered_cols], 2, as.integer)
+  # Now also include non-factor columns
+  std_cols <- (! sapply(newx, is.factor)) | ordered_cols
+  if (sum(std_cols) > 1) {
+    newx[,std_cols] <- apply(newx[,std_cols], 2, scale, center=TRUE, scale=TRUE)
+  } else {
+    newx[,std_cols] <- scale(newx[,std_cols], center=TRUE, scale=TRUE)
+  }
+  newx
+}
+x <- standardize_cols(x)
+# Exclude intercept, since glmnet and glmnet.cr include it by default
+mm <- model.matrix(~0+., x)
+# Because our data include dummies, we have already standardized, and here choose standardize=FALSE
+m1 <- glmnet.cr(mm, y, standardize=FALSE, method="backward", maxit=200)
+selected_model <- select.glmnet.cr(m1)
+
+# Prepare data for plotting the lasso results of glmnet.cr using ggplot; default plot method is too slow
+plot_data_glmnetcr <- function(x) {
+  df <- data.frame(matrix(x$beta, nrow=nrow(x$beta)))
+  df$varname <- names(x$beta[,1])
+  num_intercepts = length(levels(y)) - 1
+  df <- df[1:(nrow(df) - num_intercepts),]
+  df <- melt(df, variable.name="model")
+  df$model <- as.numeric(gsub("X", "", df$model))
+  df$lambda <- x$lambda[df$model]
+  rs = nrow(x$beta[1:(nrow(x$beta) - num_intercepts),])
+  cs = ncol(x$beta)
+  textpos <- data.frame(lambda=rep(x$lambda[cs], rs), value=x$beta[1:rs,cs], label=names(x$beta[1:rs,1]))
+  list(df, textpos)
+}
+
+mydata <- plot_data_glmnetcr(m1)
+df <- as.data.frame(mydata[1])
+textpos = as.data.frame(mydata[2])
+
+ggplot(df, aes(x=log(lambda), y=value)) + 
+  geom_line(data=df, aes(color=varname)) + 
+  geom_text(data=textpos, aes(label=label), size=2, hjust=0, vjust=-0.5) + 
+  xlab("Log Lambda (penalty associated with small coefficients)") + 
+  ylab("Coefficient Value") + 
+  ggtitle("Ordinal Logistic Regression for Health with Lasso") + guides(color=FALSE) +
+  theme_classic() + 
+  geom_vline(xintercept=log(m1$lambda[selected_model]), linetype="longdash")
+```
+
+Larger penalties reduce the number of variables included in the model; thus, at the far right, we see models with only one variable, while at the far left, we see models with all the variables.
+
+The vertical line indicates the penalty I have selected, based on the minimized Bayesian information criterion (BIC). Variables whose lines cross this vertical line will be included in the model; variables whose lines fall short of it will not be included in the model. We want to minimize the BIC, as there are diminishing returns to more complex models. Thus, we select a model with a small BIC and thus a reduced complexity (a larger lambda) as shown in the following plot:
+
+```{r health_bic, echo=FALSE, warning=FALSE}
+p <- predict(m1)
+par(cex.main=0.75)
+plot(log(m1$lambda), p$BIC, pch=19, xlab="Log Lambda (penalty associated with small coefficients)", ylab="BIC",  main="Minimizing BIC")
+points(log(m1$lambda[selected_model]), p$BIC[selected_model], pch=19, col="red")
+```
+
+To assess the performance of the chosen model, I first calculate how well it performs on the training data:
+
+```{r health_train, echo=FALSE, warning=FALSE}
+fit1 <- fitted(m1, s=selected_model)
+sum(as.numeric(fit1$class) == as.numeric(y)) / length(y)
+```
+
+On the training data, the model predicts about 43% of the responses correctly. This is significantly better than a random guess (20%), and somewhat better than a naive model that always guesses "Very good" (the most common response, at 31%). Now we test how well it performs on the test data:
+
+```{r health_test, echo=FALSE, warning=FALSE}
+newx <- xy[test,1:(ncol(xy)-1)]
+newy <- xy[test,"health"]
+newx <- standardize_cols(newx)
+newmm <- model.matrix(~0+., newx)
+fit2 <- fitted(m1, newmm, s=selected_model)
+sum(as.numeric(fit2$class) == as.numeric(newy)) / length(newy)
+```
+
+On the test data (232 survey responses randomly selected from the original dataset), the model again predicts about 43% correctly, which suggests that the model has not overfit the training data.
+
+## Health Findings
+
+We can now look at the non-zero coefficients for the selected model and get a sense of which variables are most associated with the responses to the health question. The larger the absolute value of a coefficient, the more predictive it is of reported health. Negative values indicate that a response is associated with worse reported health, while positive values indicate the response is associated with better reported health.
+
+```{r health_coefs, echo=FALSE, warning=FALSE}
+coefs <- nonzero.glmnet.cr(m1, s=selected_model)$beta
+coefs <- coefs[1:(length(coefs)-4)]
+coefs <- sort(coefs)
+par(cex.main=0.75)
+mp <- barplot(coefs, names.arg="", main="Factors most predictive of reported health")
+text(mp, ifelse(coefs<0,0.025,-0.30), labels=names(coefs), adj=0, srt=90)
+```
+
+Note that with the exception of the dummy variables (yes/no responses), all other variables were standardized prior to running the model. This allows direct comparisons of the coefficients even when variables have drastically different ranges (e.g., income runs from 1 to 6, whereas age runs from 18 to 110). However, this requires assuming that ordinal responses have equidistant intervals, which in some cases is untrue.
+
+Many of the results are not surprising. Increased numbers of visits to hospital emergency rooms, having diabetes, high cholesterol, high blood pressure, asthma, or heart disease, or having been a smoker are all correlated with lower values for reported health. Likewise, older respondents and respondents with larger BMIs also tend to report worse health. Importantly, respondents who indicated their race as black or African American generally reported worse health than those indicating another race.
+
+In contrast, respondents with higher incomes report better health, as do those reporting generally positive moods (i.e., only rarely feeling hopeless, down or depressed), those who report more frequent exercise, and those who have recently visited a dentist. Interestingly, respondents who reported having safe places to bicycle in or near their neighborhood also reported better health.
+
+Overall, we have developed a model that performs significantly better than chance or a naive guess, although there is still significant unexplained variance in the responses. Furthermore, it should be emphasized that some predictor variables are likely themselves the results of reported health, rather than causes of it. For example, mood (i.e., how often one feels down or depressed) is highly correlated with reported health, but one's mood is likely influenced by one's health, and vice versa. Likewise, healthy individuals may be more inclined to exercise, which will then help maintain their health.
+
+# Job Satisfaction
+
+In this section, we try to predict health as a function of potentially relevant variables. As before, the first step is to identify correlations between predictors.
+
+```{r job_cor, echo=FALSE, warning=FALSE, results='hide'}
+job_cor_vars <- dhr[,c("volunteer3", "income", "unsafe", "age", "health_ins", "help_avail", "mood", "fin_manage", "future_econ", "fin_parents", "opp_children", "job_loss", "bill_late", "housing_money", "noinc_months", "num_children", "english", "health", "race_black", "hisp", "retired", "us_born", "food_money", "health_delay", "educ", "pub_assist", "job_binary", "job_sat")]
+jobcor <- hetcor(job_cor_vars, use="pairwise.complete.obs")
+```
+
+The correlation matrix helps to identify several highly correlated variables, such as age and being retired, speaking English at home and being born in the U.S., having been late on bills and having had difficulty paying for food, and having been late on bills and having had to put off medical treatment.
+
+```{r job_heatmap, echo=FALSE, warning=FALSE, results='hide'}
+par(cex.main=0.5)
+heatmap(jobcor$correlations, main="Correlation Matrix for Selected Job Satisfaction Variables", cex.axis=0.1)
+highly_cor_vars(jobcor$correlations)
+```
+
+In order to address the issue of multicollinearity, I remove several of these variables (retired, us\_born, food\_money, and health\_delay). After removing these variables, the highest correlation that persists is between education and income, at 0.56. The following list reports the variables that will potentially be included in the model:
+
+```{r job_vars, echo=FALSE, warning=FALSE}
+xy <- dhr[,c("volunteer3", "income", "unsafe", "age", "health_ins", "help_avail", "mood", "fin_manage", "future_econ", "fin_parents", "opp_children", "job_loss", "bill_late", "housing_money", "noinc_months", "num_children", "english", "health", "race_black", "hisp", "educ", "pub_assist", "job_binary", "job_sat")]
+names(xy)
+```
+
+The training set consists of 702 responses randomly selected from the original dataset. The following graph shows the coefficient estimates for the series of models with increasing lasso penalties.
+
+```{r job_lasso, echo=FALSE, warning=FALSE}
+xy <- xy[complete.cases(xy),]
+set.seed(5)
+train <- sample(1:nrow(xy), round(nrow(xy)*0.9))
+test <- c(1:nrow(xy))
+test <- test[-train]
+x <- xy[train,1:(ncol(xy)-1)]
+y <- xy[train,"job_sat"]
+
+x <- standardize_cols(x)
+mm <- model.matrix(~0+., x)
+m2 <- glmnet.cr(mm, y, standardize=FALSE, method="backward", maxit=200)
+selected_model <- select.glmnet.cr(m2)
+
+mydata <- plot_data_glmnetcr(m2)
+df <- as.data.frame(mydata[1])
+textpos = as.data.frame(mydata[2])
+
+ggplot(df, aes(x=log(lambda), y=value)) + 
+  geom_line(data=df, aes(color=varname)) + 
+  geom_text(data=textpos, aes(label=label), size=2, hjust=0, vjust=-0.5) + 
+  xlab("Log Lambda (penalty associated with small coefficients)") + 
+  ylab("Coefficient Value") + 
+  ggtitle("Ordinal Logistic Regression for Job Satisfaction with Lasso") + guides(color=FALSE) +
+  theme_classic() + 
+  geom_vline(xintercept=log(m2$lambda[selected_model]), linetype="longdash")
+```
+
+As before, the vertical line indicates the selected penalty, based on the minimized Bayesian information criterion (BIC):
+
+```{r job_bic, echo=FALSE, warning=FALSE}
+# Now look at BIC:
+p <- predict(m2)
+par(cex.main=0.75)
+plot(log(m2$lambda), p$BIC, pch=19, xlab="Log Lambda (penalty associated with small coefficients)", ylab="BIC", main="Minimizing BIC")
+points(log(m2$lambda[selected_model]), p$BIC[selected_model], pch=19, col="red")
+```
+
+To assess the performance of the chosen model, I first calculate how well it performs on the training data:
+
+```{r job_train, echo=FALSE, warning=FALSE}
+fit1 <- fitted(m2, s=selected_model)
+sum(as.numeric(fit1$class) == as.numeric(y)) / length(y)
+```
+
+On the training data, the model predicts about 51% of the responses correctly. This is significantly better than a random guess (25%), and somewhat better than a naive model that always guesses "Somewhat satisfied" (the most common response, at 40%). Now we test how well it performs on the test data:
+
+```{r job_test, echo=FALSE, warning=FALSE}
+newx <- xy[test,1:(ncol(xy)-1)]
+newy <- xy[test,"job_sat"]
+newx <- standardize_cols(newx)
+newmm <- model.matrix(~0+., newx)
+fit2 <- fitted(m2, newmm, s=selected_model)
+sum(as.numeric(fit2$class) == as.numeric(newy)) / length(newy)
+```
+
+On the test data (78 survey responses randomly selected from the original dataset), the model predicts about 47% correctly, which suggests that the model may have slightly overfit the training data by a small amount. Note that this model only improves on a naive model by about 18%.
+
+## Job Satisfaction Findings
+
+As before, the absolute value of non-zero coefficients can give us insight into the best predictors of respondents' reported job satisfaction:
+
+```{r job_coefs, echo=FALSE, warning=FALSE}
+coefs <- nonzero.glmnet.cr(m2, s=selected_model)$beta
+coefs <- coefs[1:(length(coefs)-3)]
+coefs <- sort(coefs)
+par(cex.main=0.75)
+mp <- barplot(coefs, main="Factors most predictive of job satisfaction", cex.names=0.75)
+```
+
+This time, the lasso procedure has selected only a few variables. The strongest effects relate to respondents who reported that were financially managing well, had positive moods, and were in good health. Corresponding to the findings in the Wellbeing Survey Report, both age and income are positively correlated with increases in reported job satisfaction. The number of months a respondent reported being able to live without income is also positively correlated with job satisfaction.
+
+As before, several of these factors are likely endogenous to job satisfaction. That is, one's mood is likely influenced by one's job satisfaction, as is one's ability to manage financially, etc.
+
+# Personal Satisfaction
+
+Predicting personal satisfaction, a simple yes/no question (Question 1), is simpler than predicting an ordinal response, but is made more challenging by the preponderance of positive responses. We proceed as before, first identifying potentially problematic correlations:
+
+```{r sat_cor, echo=FALSE, warning=FALSE, results='hide'}
+sat_cor_vars <- dhr[,c("volunteer3", "income", "unsafe", "age", "health_ins", "help_avail", "mood", "fin_manage", "future_econ", "fin_parents", "opp_children", "job_loss", "bill_late", "housing_money", "english", "health", "race_black", "hisp", "educ", "pub_assist", "job_binary", "job_sat", "locgov_resp", "pubfac_cond", "healthcare_qual", "store_avail", "entertain_avail", "police", "affordable", "children_raise", "problem_fix", "locgov_infl", "voter", "arts", "address_time", "housing_type", "store_dist", "walk_safety", "bicycle_safety", "pubtrans_sat", "rec_avail", "neighbors_helpful", "neighbors_trust", "role_models", "ring",  "sat_area")]
+satcor <- hetcor(sat_cor_vars, use="pairwise.complete.obs")
+```
+
+```{r sat_heatmap, echo=FALSE, warning=FALSE, results='hide'}
+par(cex.main=0.75)
+heatmap(satcor$correlations, main="Correlation Matrix for Selected Personal Satisfaction Variables")
+highly_cor_vars(satcor$correlations)
+```
+
+Relatively high correlations exist between the responses for trustworthy and helpful neighbors, so I remove the former variable. A high correlation (0.62) exists between personal satisfaction and whether a respondent views their areas as a good place to raise children, but I retain the latter as a potentially useful predictor of the former. The following list reports the variables that may be potentially included in the model:
+
+```{r sat_var, echo=FALSE}
+xy <- dhr[,c("income", "unsafe", "age", "mood", "job_loss", "bill_late", "housing_money", "english", "health", "race_black", "hisp", "educ", "job_binary", "job_sat", "pubfac_cond", "healthcare_qual", "store_avail", "entertain_avail", "police", "affordable", "children_raise", "problem_fix", "locgov_infl", "arts", "address_time", "housing_type", "store_dist", "bicycle_safety", "rec_avail", "neighbors_helpful", "ring",  "sat_area")]
+names(xy)
+```
+
+The training set consists of 633 responses randomly selected from the original dataset. The following graph shows the coefficient estimates for the series of models with increasing lasso penalties.
+
+```{r sat_lasso, echo=FALSE, warning=FALSE}
+xy <- xy[complete.cases(xy),]
+set.seed(11)
+train <- sample(1:nrow(xy), round(nrow(xy)*0.9))
+test <- c(1:nrow(xy))
+test <- test[-train]
+x <- xy[train,1:(ncol(xy)-1)]
+y <- xy[train,"sat_area"]
+x <- standardize_cols(x)
+
+mm <- model.matrix(~0+., x)
+fit1 <- glmnet(mm, y, standardize=FALSE, family="binomial", alpha=1)
+par(mar=c(5,4,5,2) + 0.1)
+plot(fit1, xvar="lambda", label=FALSE, main="Logistic Regression for Personal Satisfaction with Lasso", cex.main=0.75)
+textpos <- data.frame(x=min(log(fit1$lambda)), y=fit1$beta[,dim(fit1$beta)[2]]+0.015, label=names(fit1$beta[,1]))
+text(x=textpos$x, y=textpos$y, labels=textpos$label, cex=0.5, adj=0)
+par(mar=c(5,4,4,2) + 0.1)
+```
+
+With a binomial dependent variable, we are able to use a different procedure to select the appropriate value of lambda. Cross-validation allows us to select a lambda based on multiple random samples of the training data.
+
+```{r sat_lambda, echo=FALSE, warning=FALSE}
+cv.fit1 <- cv.glmnet(mm,y=as.numeric(y),alpha=1)
+best_lambda <- cv.fit1$lambda.min
+par(mar=c(5,4,5,2) + 0.1)
+plot(cv.fit1, main="Model Selection by Cross-Validation")
+par(mar=c(5,4,4,2) + 0.1)
+```
+
+To assess the performance of the chosen model, I first calculate how well it performs on the training data:
+
+```{r sat_train, echo=FALSE, warning=FALSE}
+p1 <- predict(fit1, newx=mm, s=best_lambda, type="class")
+sum(as.numeric(p1) == (as.numeric(y)-1)) / length(y)
+```
+
+On the training data, the model predicts about 80% of the responses correctly. This is much better than a random guess (50%). However, it is virtually identical in performance to a naive model that always guesses "Satisfied," since 80% of respondents reported they were satisfied with the area in which they lived.
+
+Now we test how well the model performs on the test data:
+
+```{r sat_test, echo=FALSE, warning=FALSE}
+newx <- xy[test,1:(ncol(xy)-1)]
+newy <- xy[test,"sat_area"]
+newx <- standardize_cols(newx)
+newmm <- model.matrix(~0+., newx)
+p2 <- predict(fit1, newx=newmm, s=best_lambda, type="class")
+sum(as.numeric(p2) == (as.numeric(newy)-1)) / length(newy)
+```
+
+On the test data (70 survey responses randomly selected from the original dataset), the model predicts about 79% correctly. While this suggests that the model did not overfit the training data, it also is no better than a naive classifier.
+
+## Personal Satisfaction Findings
+
+Although the model we developed merely matches the performance of a naive classifier, it can still provide insight into what factors are predictive of personal satisfaction. As before, we examine the non-zero coefficients of the selected model:
+
+```{r sat_coefs, echo=FALSE, warning=FALSE}
+selected_model <- which.min(sapply(fit1$lambda, function(x) abs(x-best_lambda)))
+coefs <- fit1$beta[,selected_model]
+coefs <- sort(coefs)
+coefs <- coefs[coefs > 0]
+par(cex.main=0.75)
+mp <- barplot(coefs, main="Factors most predictive of personal satisfaction", names.arg="")
+text(mp, 0.2, labels=names(coefs), adj=0, srt=90)
+```
+
+The extent to which people believe the Greater New Haven area is a good place to raise children is by far the most predictive factor for personal satisfaction. This should come as no surprise given the relatively strong correlation between the two variables (0.62). Other important factors include the responsiveness of local government, how respondents feel about their neighbors, whether they believe the area is affordable to live in, as well as the availability of various amenities (entertainment, stores, and recreation). Self-reported health also has a measure association with personal satisfaction with one's area.
+
+The Wellbeing Survey Report provides a list of twelve life aspects, ranked in descending order of reported quality. Several of the factors identified above are included in this list. For example, the availability of stores and entertainment are predictive of personal satisfaction, and respondents in aggregate report that these items are generally "good" in the Greater New Haven area. However, affordability and the perceived ability to influence local government are also predictive of personal satisfaction, but respondents in aggregate report that these items are only "fair" in the Greater New Haven area.
