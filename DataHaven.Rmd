@@ -3,11 +3,13 @@ title: "Data Haven Well-Being Analysis"
 author: "Gabriel J. Michael, Ph.D., gabriel.michael@yale.edu"
 date: "February 25, 2015"
 output: pdf_document
+header-includes:
+     - \usepackage{longtable}
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, include=FALSE}
 # Test if necessary packages are installed, and load them
-required_packages <- c("car", "ggplot2", "polycor", "glmnet", "glmnetcr", "reshape2", "MASS")
+required_packages <- c("car", "ggplot2", "polycor", "glmnet", "glmnetcr", "reshape2", "MASS", "xtable")
 required_packages_test <- sapply(required_packages, require, character.only=TRUE)
 if (any(ifelse(required_packages_test, FALSE, TRUE))) {
   stop(paste("Missing package", required_packages[! required_packages_test], "\n"))
@@ -469,3 +471,66 @@ text(mp, 0.2, labels=names(coefs), adj=0, srt=90)
 The extent to which people believe the Greater New Haven area is a good place to raise children is by far the most predictive factor for personal satisfaction. This should come as no surprise given the relatively strong correlation between the two variables (0.62). Other important factors include the responsiveness of local government, how respondents feel about their neighbors, whether they believe the area is affordable to live in, as well as the availability of various amenities (entertainment, stores, and recreation). Self-reported health also has a measure association with personal satisfaction with one's area.
 
 The Wellbeing Survey Report provides a list of twelve life aspects, ranked in descending order of reported quality. Several of the factors identified above are included in this list. For example, the availability of stores and entertainment are predictive of personal satisfaction, and respondents in aggregate report that these items are generally "good" in the Greater New Haven area. However, affordability and the perceived ability to influence local government are also predictive of personal satisfaction, but respondents in aggregate report that these items are only "fair" in the Greater New Haven area.
+
+---
+
+# Correlated Variables, Homogenous Variables, and Variables with Low Response Rates
+
+## Correlated Variables
+
+One of a pair of highly correlated variables might be removed from the survey without losing much information. The following list reports pairs of variables with correlations >= 0.5, along with their numeric correlation.
+
+```{r cor_vars, echo=FALSE, warning=FALSE}
+cor_vars <- dhr[,c("sat_area", "sat_change", "children_raise", "role_models", "walk_safety", "bicycle_safety", "neighbors_helpful", "neighbors_trust", "english", "us_born", "health", "mood", "help_avail", "future_econ", "fin_parents", "opp_children", "health_delay", "job_loss", "bill_late", "food_money", "fin_manage", "heart_disease", "high_bp", "diabetes", "asthma", "high_cholest", "health_ins", "has_dr", "health_visit", "hosp_emerg", "dentist_recent")]
+mycor <- hetcor(cor_vars, use="pairwise.complete.obs")
+#mycor$correlations
+#par(cex.main=0.75)
+#heatmap(mycor$correlations, main="Correlation Matrix for Selected Variables")
+highly_cor_vars <- function(x, thresh=0.5) {
+  x[x==1] <- NA
+  arrind <- which(x>=thresh, arr.ind=TRUE)
+  t1 <- cbind(arrind, x[arrind])
+  t1[order(-t1[,3]),]
+}
+results <- round(highly_cor_vars(mycor$correlations)[,3],2)
+results
+#apply(dhr[,names(results)], 2, function(x) sum(!is.na(x)))
+```
+
+## Homogenous Variables
+
+Variables with largely homogenous results (i.e., low variance) might not provide particularly useful information; the following list reports variables with a variance <= 0.10, along with their numeric variance. In particular, school_act, housing_money, english, and help_avail exhibit very low variance. One might want to retain english for descriptive statistical purposes, but the others could likely be discarded without losing much information.
+
+```{r variances, echo=FALSE, warning=FALSE}
+variances <- apply(dhr, 2, var, na.rm=TRUE)
+variances <- variances[! (is.na(variances) | variances==0)]
+variances <- sort(variances)
+options(scipen=999)
+round(variances[variances<0.1],2)
+options(scipen=0)
+```
+
+## Variables with Low Response Rates
+
+Variables with low response rates severely limit the inferences that can be drawn, and usually cannot be used in more complex analyses without resorting to techniques like multiple imputation. The following list reports variable names with more than 300 missing observations, out of 1307 observations total, and reports the number of missing observations for these variables.
+
+In some cases, the variables are follow-up questions where we would expect a low response rate (e.g., smoke), but in other cases there were simply a large number of "I don't know" responses or outright refusals.
+
+---
+
+```{r missings, echo=FALSE, warning=FALSE}
+missing <- apply(dhr, 2, function(x) sum(is.na(x)))
+missing <- sort(missing, decreasing=TRUE)
+missing[missing>300 & missing<1241]
+```
+
+# List of Variable Name Recodings
+
+The following table reports the original and recoded variable names for reference.
+
+```{r varnames, echo=FALSE, warning=FALSE, results='asis'}
+results <- cbind(names(dh),names(dhr[,1:177]))
+colnames(results) <- c("original", "recoded")
+xt <- xtable(results)
+print(xt, comment=FALSE, include.rownames=FALSE, tabular.environment='longtable', floating=FALSE)
+```
