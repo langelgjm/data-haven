@@ -1,0 +1,395 @@
+<?xml version="1.0"?>
+<!--<!DOCTYPE metadata SYSTEM "http://www.esri.com/metadata/esriprof80.dtd">-->
+<metadata xml:lang="en">
+	<Esri>
+		<CreaDate>20061119</CreaDate>
+		<CreaTime>06452500</CreaTime>
+		<SyncOnce>FALSE</SyncOnce>
+		<SyncDate>20120126</SyncDate>
+		<SyncTime>15553100</SyncTime>
+		<ModDate>20120126</ModDate>
+		<ModTime>15553100</ModTime>
+		<MetaID>{AF93AE0C-6924-450F-9564-AE2CC1ED03DE}</MetaID><DataProperties><lineage><Process ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Data Management Tools.tbx\CopyFeatures" Date="20061204" Time="120455">CopyFeatures F:\GeoData\Political\geodatabase\Political_Boundary.mdb\Town_Index "Database Connections\depdbs11@dep.sde\depgis.DEP.Town_Index" DEPVECTORSTATIC 10000 0 0</Process><Process Name="CopyFeatures_90" ToolSource="C:\Program Files\ArcGIS\ArcToolbox\Toolboxes\Data Management Tools.tbx\CopyFeatures" Date="20081215" Time="163024">CopyFeatures "Database Connections\10.18.8.94.depgis@DEP.sde\depgis.DEP.TOWN_INDEX" "Database Connections\062174-svr.depgis@DEP.sde\depgis.DEP.TOWN_INDEX" DEPFEATURESTATIC 0 0 0</Process><Process ToolSource="C:\Program Files\ArcGIS\Desktop10.0\ArcToolbox\Toolboxes\Data Management Tools.tbx\CopyFeatures" Date="20120126" Time="155532">CopyFeatures "Database Connections\10.18.8.60.depgis@DEP_92dc.sde\depgis.DEP.TOWN_INDEX" Y:\GIS_Warehouse\public_data\Shapefile_format\Political\Political\TOWN_INDEX.shp # 0 0 0</Process></lineage><itemProps><itemName Sync="TRUE">TOWN_INDEX</itemName><imsContentType Sync="TRUE">002</imsContentType><nativeExtBox><westBL Sync="TRUE">730512.188000</westBL><eastBL Sync="TRUE">1263094.375000</eastBL><southBL Sync="TRUE">558166.313000</southBL><northBL Sync="TRUE">944279.188000</northBL><exTypeCode Sync="TRUE">1</exTypeCode></nativeExtBox><itemLocation><linkage Sync="TRUE">file://\\depnb100\GISDATA\GIS_Warehouse\public_data\Shapefile_format\Political\Political\TOWN_INDEX.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></itemLocation><itemSize Sync="TRUE">0.000</itemSize></itemProps><coordRef><type Sync="TRUE">Projected</type><geogcsn Sync="TRUE">GCS_North_American_1983</geogcsn><projcsn Sync="TRUE">NAD_1983_StatePlane_Connecticut_FIPS_0600_Feet</projcsn><peXml Sync="TRUE">&lt;ProjectedCoordinateSystem xsi:type='typens:ProjectedCoordinateSystem' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:typens='http://www.esri.com/schemas/ArcGIS/10.0'&gt;&lt;WKT&gt;PROJCS[&amp;quot;NAD_1983_StatePlane_Connecticut_FIPS_0600_Feet&amp;quot;,GEOGCS[&amp;quot;GCS_North_American_1983&amp;quot;,DATUM[&amp;quot;D_North_American_1983&amp;quot;,SPHEROID[&amp;quot;GRS_1980&amp;quot;,6378137.0,298.257222101]],PRIMEM[&amp;quot;Greenwich&amp;quot;,0.0],UNIT[&amp;quot;Degree&amp;quot;,0.0174532925199433]],PROJECTION[&amp;quot;Lambert_Conformal_Conic&amp;quot;],PARAMETER[&amp;quot;False_Easting&amp;quot;,999999.999996],PARAMETER[&amp;quot;False_Northing&amp;quot;,499999.999998],PARAMETER[&amp;quot;Central_Meridian&amp;quot;,-72.75],PARAMETER[&amp;quot;Standard_Parallel_1&amp;quot;,41.2],PARAMETER[&amp;quot;Standard_Parallel_2&amp;quot;,41.86666666666667],PARAMETER[&amp;quot;Latitude_Of_Origin&amp;quot;,40.83333333333334],UNIT[&amp;quot;Foot_US&amp;quot;,0.3048006096012192],AUTHORITY[&amp;quot;EPSG&amp;quot;,2234]]&lt;/WKT&gt;&lt;XOrigin&gt;-119756300&lt;/XOrigin&gt;&lt;YOrigin&gt;-96342500&lt;/YOrigin&gt;&lt;XYScale&gt;37294945.500735737&lt;/XYScale&gt;&lt;ZOrigin&gt;-100000&lt;/ZOrigin&gt;&lt;ZScale&gt;10000&lt;/ZScale&gt;&lt;MOrigin&gt;-100000&lt;/MOrigin&gt;&lt;MScale&gt;10000&lt;/MScale&gt;&lt;XYTolerance&gt;0.0032808333333333335&lt;/XYTolerance&gt;&lt;ZTolerance&gt;0.001&lt;/ZTolerance&gt;&lt;MTolerance&gt;0.001&lt;/MTolerance&gt;&lt;HighPrecision&gt;true&lt;/HighPrecision&gt;&lt;WKID&gt;2234&lt;/WKID&gt;&lt;/ProjectedCoordinateSystem&gt;</peXml><csUnits Sync="TRUE">Linear Unit: Foot_US (0.304801)</csUnits></coordRef></DataProperties></Esri>
+	<idinfo>
+		<native>These data are maintained by the State of Connecticut using ArcGIS software developed by Environmental Systems Research Institute (ESRI) in a Microsoft Windows operating system environment.</native>
+		<descript>
+			<langdata Sync="TRUE">en</langdata>
+			<abstract>Connecticut Town Index is a 1:125,000-scale polygon feature-based layer that includes a polygon feature for every Connecticut town (municipality). There are 169 town polygon features in this layer. The corresponding town number and town name attributes uniquely identify town polygon features. Town number values are based on the Town Codes issued by the State of Connecticut, Office of the State Controller, which range from 1 to 169. As a historic note, the Connecticut Town Index layer was originally digitized in 1986 by the Connecticut Department of Environmental Protection using Esri ArcInfo 3 software installed on a mini computer. It was the first statewide GIS layer created by the Connecticut Department of Environmental Protection. The data was in ArcInfo coverage format, Connecticut State Plane Coordinate System, North American Datum 1927, and map units feet.</abstract>
+			<purpose>Connecticut Town Index is a general purpose index map of Connecticut towns that was compiled at 1:125,000 scale (1 inch equals approximately 2 miles). The layer is designed to be used to depict Connecticut towns at small scales or on small maps printed on regular size (8.5 x 11 inch) paper, for example. The Town Index layer does not accurately represent Connecticut town boundaries because it was digitized at 1:125,000 scale. Do not display, map or analyze the Town Index layer with information collected at larger scales. To depict more accurate 1:24,000-scale Connecticut town boundaries on a map, use the layer named Town, which is also published by the State of Connecticut Department of Environmental Protection.</purpose>
+		</descript>
+		<citation>
+			<citeinfo>
+				<pubdate>19860101</pubdate>
+				<title>Connecticut Town Index</title>
+				<ftname Sync="TRUE">depgis.DEP.TOWN_INDEX</ftname>
+				<geoform Sync="TRUE">vector digital data</geoform>
+				<onlink>http://www.ct.gov/deep</onlink>
+				<pubinfo>
+					<pubplace>Hartford, Connecticut, USA</pubplace>
+					<publish>State of Connecticut, Department of Environmental Protection</publish>
+				</pubinfo>
+				<othercit>The USGS is the collector of the mapped town boundary data (compiler). The State of Connecticut, Department of Environmental Protection is the creator and maintainer of the data layer (editor) and producer (publisher) of this information for use. The 2005 Edition includes the same set of geographic features published in 1986 with the addition of metadata. This layer includes information that is static and does not change over time. Data is not updated. Data compiled at 1:125,000 scale.</othercit>
+				<edition>2005</edition>
+				<origin>State of Connecticut, Department of Environmental Protection (data editor and publisher)</origin>
+				<origin>U.S Geological Survey, National Mapping Program (data compiler)</origin></citeinfo>
+		</citation>
+		<timeperd>
+			<current>Edition date</current>
+			<timeinfo>
+				<sngdate>
+					<caldate>2005</caldate>
+				</sngdate>
+			</timeinfo>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>None planned</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc Sync="TRUE">-73.742172</westbc>
+				<eastbc Sync="TRUE">-71.781365</eastbc>
+				<northbc Sync="TRUE">42.052612</northbc>
+				<southbc Sync="TRUE">40.988796</southbc>
+			</bounding>
+			<lboundng>
+				<leftbc Sync="TRUE">730512.188000</leftbc>
+				<rightbc Sync="TRUE">1263094.375000</rightbc>
+				<bottombc Sync="TRUE">558166.313000</bottombc>
+				<topbc Sync="TRUE">944279.188000</topbc>
+			</lboundng>
+		</spdom>
+		<keywords>
+			<theme>
+				<themekt>None</themekt>
+				<themekey>small scale</themekey>
+				<themekey>town</themekey>
+				<themekey>municipality</themekey>
+				<themekey>index</themekey>
+			</theme>
+			<place>
+				<placekt>U.S. Department of Commerce, 1987, Codes for the Identification of the States, the District of Columbia and the Outlying Areas of The United States, and Associated Areas (Federal Information Processing Standard 5-2):  Washington, DC, National Institute of Standards and Technology.</placekt>
+				<placekey>Connecticut</placekey>
+				<placekey>CT</placekey></place>
+			<theme><themekt>ISO 19115 Topic Category</themekt><themekey>boundaries</themekey></theme><place><placekey>United States of America</placekey><placekt>U.S. Department of Commerce, 1995, Countries, Dependencies, Areas of Special Sovereignty, and Their Principal Administrative Divisions (Federal Information Processing Standard (FIPS) 10-4): Washington, D.C., National Institute of Standards and Technology.</placekt><placekey>USA</placekey></place></keywords>
+		<accconst>None. The data is in the public domain and may be redistributed.</accconst>
+		<useconst>No restrictions or legal prerequisites for using the data. The data is suitable for use at appropriate scale, and is not intended for maps printed at scales greater or more detailed than 1:125,000 scale (1 inch equals approximately 2 miles). Although this data set has been used by the State of Connecticut, Department of Environmental Protection, no warranty, expressed or implied, is made by the State of Connecticut, Department of Environmental Protection as to the accuracy of the data and or related materials. The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the State of Connecticut, Department of Environmental Protection in the use of these data or related materials. The user assumes the entire risk related to the use of these data. Once the data is distributed to the user, modifications made to the data by the user should be noted in the metadata. When printing this data on a map or using it in a software application, analysis, or report, please acknowledge the State of Connecticut, Department of Environmental Protection and the U.S. Geological Survey, National Mapping Program as the source for this information. For example, include the following data source description when printing this layer on a map: Towns - From the Town Index layer, compiled and published by CT DEP and USGS. Source map scale is 1:125,000.</useconst>
+		<natvform Sync="TRUE">SDE Feature Class</natvform>
+		<ptcontac>
+			<cntinfo>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>79 Elm Street</address>
+					<city>Hartford</city>
+					<state>Connecticut</state>
+					<postal>06106-5127</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>860-424-3540</cntvoice>
+				<cntfax>860-424-4058</cntfax>
+				<cntemail>dep.gisdata@ct.gov</cntemail>
+				<hours>Monday to Friday, 08:30 to 16:30 Eastern Standard Time</hours>
+				<cntorgp>
+					<cntorg>State of Connecticut, Department of Environmental Protection</cntorg>
+					<cntper>Howie Sternberg</cntper>
+				</cntorgp>
+			</cntinfo>
+		</ptcontac>
+		<browse>
+			<browsed>Full view of Connecticut Town Index layer</browsed>
+			<browsen>http://www.cteco.uconn.edu/metadata/dep/browsegraphic/townindex.gif</browsen>
+			<browset>GIF</browset>
+		</browse>
+	</idinfo>
+	<dataIdInfo>
+		<envirDesc Sync="TRUE">Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 3; ESRI ArcGIS 10.0.3.3600</envirDesc>
+		<dataLang>
+			<languageCode Sync="TRUE" value="en" country="US"/>
+			<countryCode value="US" Sync="TRUE"></countryCode></dataLang>
+		<idCitation>
+			<resTitle Sync="TRUE">TOWN_INDEX</resTitle>
+			<presForm>
+				<PresFormCd Sync="TRUE" value="005"/>
+			</presForm>
+		</idCitation>
+		<spatRpType>
+			<SpatRepTypCd Sync="TRUE" value="001"/>
+		</spatRpType>
+		<dataExt>
+			<geoEle>
+				<GeoBndBox esriExtentType="search">
+					<westBL Sync="TRUE">-73.742172</westBL>
+					<eastBL Sync="TRUE">-71.781365</eastBL>
+					<northBL Sync="TRUE">42.052612</northBL>
+					<southBL Sync="TRUE">40.988796</southBL>
+					<exTypeCode Sync="TRUE">1</exTypeCode>
+				</GeoBndBox>
+				<GeoBndBox esriExtentType="native"><westBL Sync="TRUE">730512.188</westBL><eastBL Sync="TRUE">1263094.375</eastBL><northBL Sync="TRUE">944279.188</northBL><southBL Sync="TRUE">558166.313</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle>
+		</dataExt>
+		<geoBox esriExtentType="decdegrees">
+			<westBL Sync="TRUE">-73.742172</westBL>
+			<eastBL Sync="TRUE">-71.781365</eastBL>
+			<northBL Sync="TRUE">42.052612</northBL>
+			<southBL Sync="TRUE">40.988796</southBL>
+			<exTypeCode Sync="TRUE">1</exTypeCode>
+		</geoBox>
+		<descKeys><thesaName uuidref="723f6998-058e-11dc-8314-0800200c9a66"></thesaName><keyword Sync="TRUE">002</keyword></descKeys></dataIdInfo>
+	<metainfo>
+		<langmeta Sync="TRUE">en</langmeta>
+		<metstdn Sync="TRUE">FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+		<metstdv Sync="TRUE">FGDC-STD-001-1998</metstdv>
+		<mettc Sync="TRUE">local time</mettc>
+		<metc>
+			<cntinfo>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<city>Hartford</city>
+					<state>Connecticut</state>
+					<postal>06106-5127</postal>
+					<address>79 Elm Street</address>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>860-424-3540</cntvoice>
+				<cntfax>860-424-4058</cntfax>
+				<cntemail>dep.gisdata@ct.gov</cntemail>
+				<hours>Monday to Friday, 08:30 to 16:30 Eastern Standard Time</hours>
+				<cntorgp>
+					<cntorg>State of Connecticut, Department of Environmental Protection</cntorg>
+					<cntper>Howie Sternberg</cntper>
+				</cntorgp>
+			</cntinfo>
+		</metc>
+		<metd Sync="TRUE">20111209</metd>
+	</metainfo>
+	<mdLang>
+		<languageCode Sync="TRUE" value="en"/>
+		<countryCode value="US" Sync="TRUE"></countryCode></mdLang>
+	<mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName>
+	<mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer>
+	<mdChar>
+		<CharSetCd Sync="TRUE" value="004"/>
+	</mdChar>
+	<mdHrLv>
+		<ScopeCd Sync="TRUE" value="005"/>
+	</mdHrLv>
+	<mdHrLvName Sync="TRUE">dataset</mdHrLvName>
+	<distinfo>
+		<resdesc>Connecticut Town Index</resdesc>
+		<stdorder>
+			<fees>An online copy of the data may be accessed without charge.</fees>
+			<digform>
+				<digtinfo>
+					<formname>Shapefile, Feature Class</formname>
+					<formvern>ArcGIS</formvern>
+					<filedec>Zip file</filedec>
+				</digtinfo>
+				<digtopt>
+					<onlinopt>
+						<computer>
+							<networka>
+								<networkr>http://www.ct.gov/deep</networkr>
+							</networka>
+						</computer>
+					</onlinopt>
+				</digtopt>
+			</digform>
+		</stdorder>
+		<distrib>
+			<cntinfo>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>79 Elm Street</address>
+					<city>Hartford</city>
+					<state>Connecticut</state>
+					<postal>06106-5127</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>860-424-3540</cntvoice>
+				<cntfax>860-424-4058</cntfax>
+				<cntemail>dep.gisdata@ct.gov</cntemail>
+				<cntorgp>
+					<cntorg>State of Connecticut, Department of Enviromental Protection</cntorg>
+				</cntorgp>
+				<hours>Monday to Friday, 08:30 to 16:30 Eastern Standard Time</hours>
+			</cntinfo>
+		</distrib>
+		<custom>The data distributor does not provide custom GIS analysis or mapping services. Data is available in a standard format and may be converted to other formats, projections, coordinate systems, or selected for specific geographic regions by the party receiving the data.</custom>
+		<techpreq>Geographic information sytem (GIS), computer-aided drawing or other mapping software is necessary to display, view and access the information.</techpreq>
+		<distliab>Although this data set  has been used by the State of Connecticut, Department of Environmental Protection, no warranty, expressed or implied, is made by the State of Connecticut, Department of Environmental Protection as to the accuracy of the data and or related materials.  The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the State of Connecticut, Department of Environmental Protection in the use of these data or related materials. The user assumes the entire risk related to the use of these data. Once the data is distributed to the user, modifications made to the data by the user should be noted in the metadata.</distliab></distinfo>
+	<distInfo>
+		<distributor>
+			<distorTran>
+				<onLineSrc>
+					<orDesc Sync="TRUE">002</orDesc>
+					<linkage Sync="TRUE">Server=10.18.8.60; Service=sde92:sqlserver:10.18.8.60; Database=depgis; User=dep; Version=sde.DEFAULT</linkage>
+					<protocol Sync="TRUE">ArcSDE Connection</protocol>
+				</onLineSrc>
+				<transSize Sync="TRUE">0.752</transSize>
+			</distorTran>
+			<distorFormat>
+				<formatName Sync="TRUE">SDE Feature Class</formatName>
+			</distorFormat>
+		</distributor>
+		<distFormat><formatName Sync="TRUE">Shapefile</formatName></distFormat><distTranOps><transSize Sync="TRUE">0.000</transSize></distTranOps></distInfo>
+	<spdoinfo>
+		<direct Sync="TRUE">Vector</direct>
+		<indspref>Connecticut town names and numbers</indspref>
+		<ptvctinf><esriterm><efeatyp Sync="TRUE">Simple</efeatyp><efeageom code="4" Sync="TRUE"></efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">0</efeacnt><spindex Sync="TRUE">FALSE</spindex><linrefer Sync="TRUE">FALSE</linrefer></esriterm></ptvctinf></spdoinfo>
+	<spref>
+		<horizsys>
+			<cordsysn>
+				<geogcsn Sync="TRUE">GCS_North_American_1983</geogcsn>
+				<projcsn Sync="TRUE">NAD_1983_StatePlane_Connecticut_FIPS_0600_Feet</projcsn>
+			</cordsysn>
+			<planar>
+				<planci>
+					<plance Sync="TRUE">coordinate pair</plance>
+					<plandu Sync="TRUE">survey feet</plandu>
+					<coordrep>
+						<absres Sync="TRUE">0.000250</absres>
+						<ordres Sync="TRUE">0.000250</ordres>
+					</coordrep>
+				</planci>
+			</planar>
+			<geodetic>
+				<horizdn Sync="TRUE">North American Datum of 1983</horizdn>
+				<ellips Sync="TRUE">Geodetic Reference System 80</ellips>
+				<semiaxis Sync="TRUE">6378137.000000</semiaxis>
+				<denflat Sync="TRUE">298.257222</denflat>
+			</geodetic>
+		</horizsys>
+		<vertdef><altsys><altenc Sync="TRUE">Explicit elevation coordinate included with horizontal coordinates</altenc><altres Sync="TRUE">1.000000</altres></altsys></vertdef></spref>
+	<refSysInfo>
+		<RefSystem>
+			<refSysID>
+				<identCode Sync="TRUE" code="2234" value="2234">NAD_1983_StatePlane_Connecticut_FIPS_0600_Feet</identCode>
+				<idCodeSpace Sync="TRUE">EPSG</idCodeSpace><idVersion Sync="TRUE">7.4.1</idVersion></refSysID>
+		</RefSystem>
+	</refSysInfo>
+	<spatRepInfo>
+		<VectSpatRep><geometObjs Name="TOWN_INDEX"><geoObjTyp><GeoObjTypCd value="002" Sync="TRUE"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">0</geoObjCnt></geometObjs><topLvl><TopoLevCd value="001" Sync="TRUE"></TopoLevCd></topLvl></VectSpatRep></spatRepInfo>
+	<eainfo>
+		<overview>
+			<eaover>Includes one polygon feature for each Connecticut town (municipality), uniquely identified with Town number and Town name attribute values. Label polygon features with the TOWN attribute to display town names on a map.</eaover>
+			<eadetcit>Connecticut Town numbers, based on the Town Codes issued by the State of Connecticut, range from 1 to 169 in the following order:
+
+Andover (1), Ansonia (2), Ashford (3), Avon (4), Barkhamsted (5), Beacon Falls (6), Berlin (7), Bethany (8), Bethel (9), Bethlehem (10), Bloomfield (11), Bolton (12), Bozrah (13), Branford (14), Bridgeport (15), Bridgewater (16), Bristol (17), Brookfield (18), Brooklyn (19), Burlington (20), Canaan (21), Canterbury (22), Canton (23), Chaplin (24), Cheshire (25), Chester (26), Clinton (27), Colchester (28), Colebrook (29), Columbia (30), Cornwall (31), Coventry (32), Cromwell (33), Danbury (34), Darien (35), Deep River (36), Derby (37), Durham (38), Eastford (39), East Granby (40), East Haddam (41), East Hampton (42), East Hartford (43), East Haven (44), East Lyme (45), Easton (46), East Windsor (47), Ellington (48), Enfield (49), Essex (50), Fairfield (51), Farmington (52), Franklin (53), Glastonbury (54), Goshen (55), Granby (56), Greenwich (57), Griswold (58), Groton (59), Guilford (60), Haddam (61), Hamden (62), Hampton (63), Hartford (64), Hartland (65), Harwinton (66), Hebron (67), Kent (68), Killingly (69), Killingworth (70), Lebanon (71), Ledyard (72), Lisbon (73), Litchfield (74), Lyme (75), Madison (76), Manchester (77), Mansfield (78), Marlborough (79), Meriden (80), Middlebury (81), Middlefield (82), Middletown (83), Milford (84), Monroe (85), Montville (86), Morris (87), Naugatuck (88), New Britain (89), New Canaan (90), New Fairfield (91), New Hartford (92), New Haven (93), Newington (94), New London (95), New Milford (96), Newtown (97), Norfolk (98), North Branford (99), North Canaan (100), North Haven (101), North Stonington (102), Norwalk (103), Norwich (104), Old Lyme (105), Old Saybrook (106), Orange (107), Oxford (108), Plainfield (109), Plainville (110), Plymouth (111), Pomfret (112), Portland (113), Preston (114), Prospect (115), Putnam (116), Redding (117), Ridgefield (118), Rocky Hill (119), Roxbury (120), Salem (121), Salisbury (122), Scotland (123), Seymour (124), Sharon (125), Shelton (126), Sherman (127), Simsbury (128), Somers (129), Southbury (130), Southington (131), South Windsor (132), Sprague (133), Stafford (134), Stamford (135), Sterling (136), Stonington (137), Stratford (138), Suffield (139), Thomaston (140), Thompson (141), Tolland (142), Torrington (143), Trumbull (144), Union (145), Vernon (146), Voluntown (147), Wallingford (148), Warren (149), Washington (150), Waterbury (151), Waterford (152), Watertown (153), Westbrook (154), West Hartford (155), West Haven (156), Weston (157), Westport (158), Wethersfield (159), Willington (160), Wilton (161), Winchester (162), Windham (163), Windsor (164), Windsor Locks (165), Wolcott (166), Woodbridge (167), Woodbury (168), and Woodstock (169).</eadetcit></overview>
+		<detailed Name="TOWN_INDEX">
+			<enttyp>
+				<enttypl>Connecticut Town Index</enttypl>
+				<enttypt Sync="TRUE">Feature Class</enttypt>
+				<enttypc Sync="TRUE">0</enttypc>
+				<enttypd>Includes one polygon feature for each Connecticut town (municipality).</enttypd>
+				<enttypds>State of Connecticut, Department of Enviromental Protection</enttypds></enttyp>
+			<attr><attrlabl Sync="TRUE">FID</attrlabl><attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Internal feature number.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">SHAPE</attrlabl><attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Feature geometry.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Coordinates defining the features.</udom></attrdomv></attr><attr>
+				<attrlabl Sync="TRUE">TOWN_NO</attrlabl>
+				<attwidth Sync="TRUE">5</attwidth>
+				<atoutwid Sync="TRUE">3</atoutwid>
+				<attrtype Sync="TRUE">Integer</attrtype>
+				<attrdefs>State of Connecticut, Office of the State Controller</attrdefs>
+				<attrdef>Town Number - ID number for the Connecticut Town (municipality), based on the Town Codes issued by the State of Connecticut, Office of the State Controller, which range from 1 to 169.</attrdef>
+				<attrdomv>
+					<udom>Numeric value ranging from 1 to 169.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">TOWN_NO</attalias>
+				<atprecis Sync="TRUE">5</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl Sync="TRUE">TOWN</attrlabl>
+				<attwidth Sync="TRUE">16</attwidth>
+				<atoutwid Sync="TRUE">16</atoutwid>
+				<attrtype Sync="TRUE">String</attrtype>
+				<attrdefs>State of Connecticut, Office of the State Controller</attrdefs>
+				<attrdef>Town Name - Text values that correspond to numeric TOWN_NO attribute values. TOWN is the English language equivalent of (decodes) the TOWN_NO field.</attrdef>
+				<attrdomv>
+					<udom>Text value (town name).</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">TOWN</attalias>
+				<atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr><attrlabl Sync="TRUE">SHAPE_area</attrlabl><attalias Sync="TRUE">SHAPE_area</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Area of feature in internal units squared.</attrdef><attrdefs Sync="TRUE">ESRI</attrdefs><attrdomv><udom Sync="TRUE">Positive real numbers that are automatically generated.</udom></attrdomv></attr><attr><attrlabl Sync="TRUE">SHAPE_len</attrlabl><attalias Sync="TRUE">SHAPE_len</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr></detailed>
+	</eainfo>
+	<mdDateSt Sync="TRUE">20120126</mdDateSt>
+	<dataqual>
+		<posacc>
+			<horizpa>
+				<horizpar>The horizontal positional accuracy of this data is unknown. Avoid displaying or printing this information at map scales greater than 1:125,000 (1 inch equals approximately 2 miles).</horizpar>
+			</horizpa>
+		</posacc>
+		<lineage>
+			<srcinfo>
+				<srcscale>125000</srcscale>
+				<typesrc>paper map</typesrc>
+				<srccitea>Source 1 - State of Connecticut map</srccitea>
+				<srctime>
+					<timeinfo>
+						<sngdate>
+							<caldate>1974</caldate>
+						</sngdate>
+					</timeinfo>
+					<srccurr>The planimetry revision date printed on map</srccurr>
+				</srctime>
+				<srccite>
+					<citeinfo>
+						<title>State of Connecticut map</title>
+						<pubinfo>
+							<publish>U.S. Geological Survey</publish>
+							<pubplace>Reston, Virginia USA</pubplace></pubinfo>
+						<pubdate>Unknown</pubdate>
+						<geoform>map</geoform>
+						<othercit>A planimetric base map with highways. Planimetry revised in 1974. </othercit>
+						<origin>U.S Geological Survey, National Mapping Program (data compiler and publisher)</origin></citeinfo>
+				</srccite>
+				<srccontr>Digitzed Connecticut town boundaries printed on map.</srccontr></srcinfo>
+			<procstep>
+				<procdesc>Create Towns Index layer - Using ESRI ArcInfo software, features were digitized by registering the 1:125,000-scale State of Connecticut map to the digitizing tablet and using the crosshairs of the digitizer's mouse to manually capture the geometry (shape) of town boundaries on the published map. It is not known which features on the map were used as registration points to register the map to the digitizing table nor is the quality of the registration known or documented. For example, the RMS error was undocumented and not known at the time this metatdata was written. In general, line work on the published map corresponding to the boundaries of the Connecticut towns and the Connecticut coastline were manually digitized off the source map so as to not overshoot or undershoot any intersecting town boundaries. Where necessary, additional minor corrections (edits) to feature geometry were manually digitized on the screen (heads-up digitizing) at larger (zoomed in) display scales. Line features enclosed the geographic areas for all 169 towns. Outlined by these linear features, town polygon features were subsequently created and manually encoded with the corresponding Town number and Town name attribute values. These values were visually inspected for accuracy. In 1999, the data was converted from ESRI ArcInfo Coverage format to ESRI Shapefile format and transformed from the Connecticut State Plane Coordinate System, North American Datum of 1927 (NAD27) to the Connecticut State Plane Coordinate System, North American Datum of 1983 (NAD83). The AREA, PERIMETER, TOWN#, and TOWN-ID attributes from ArcInfo coverage format were not included in the Shapefile because their values are only maintained by ArcInfo software with spatial data that is ArcInfo coverage format. Using ArcView 3.3 software and an Avenue script named Table.ExportSorted (Peter Girard, author) available from the ArcScripts download page at www.esri.com, the polygon feature attribute table was permanently sorted in ascending order by Town number. As a historic note, the Connecticut Town Index layer was originally digitized in 1986 by the Connecticut Department of Environmental Protection using Esri ArcInfo 3 software installed on a mini computer. It was the first statewide GIS layer created by the Connecticut Department of Environmental Protection. The data was in ArcInfo coverage format, Connecticut State Plane Coordinate System, North American Datum 1927, and map units feet.</procdesc>
+				<procsv>ArcInfo 8.3</procsv>
+				<procdate>1986-2005</procdate>
+				<srcused>Source 1 - State of Connecticut map</srcused>
+				<srcprod>Source 2 - Town_Index.shp</srcprod>
+				<proccont>
+					<cntinfo>
+						<cntorgp>
+							<cntorg>State of Connecticut, Department of Environmental Protection</cntorg>
+						</cntorgp>
+						<cntaddr><addrtype>mailing and physical address</addrtype><address>79 Elm Street</address><city>Hartford</city><state>Connecticut</state><postal>06106</postal><country>USA</country></cntaddr><cntvoice>860-424-3540</cntvoice></cntinfo>
+				</proccont>
+			</procstep>
+			<srcinfo>
+				<srccitea>Source 2 - Town_Index.shp</srccitea>
+				<typesrc>disc</typesrc>
+				<srcscale>125000</srcscale>
+				<srccite>
+					<citeinfo>
+						<title>Connecticut Town Index</title>
+						<origin>State of Connecticut, Department of Environmental Protection (data editor and publisher)</origin>
+						<onlink>http://www.ct.gov/deep</onlink>
+						<pubinfo>
+							<pubplace>Hartford, Connecticut, USA</pubplace>
+							<publish>State of Connecticut, Department of Environmental Protection</publish>
+						</pubinfo>
+						<origin>U.S Geological Survey, National Mapping Program (data compiler)</origin><pubdate>19860101</pubdate><edition>2005</edition><geoform>vector digital data</geoform></citeinfo>
+				</srccite>
+				<srctime>
+					<timeinfo>
+						<sngdate>
+							<caldate>1986</caldate>
+						</sngdate>
+					</timeinfo>
+					<srccurr>publication date</srccurr>
+				</srctime>
+				<srccontr>Town_Index.shp was originally in ArcInfo Coverage format and digitized in 1986 using the Connecticuct State Plane Coordinate System, North American Datum of 1927 (NAD27). In 1999, the data was converted to ESRI Shapefile format and to the Connecticut State Plane Coordinate System, North American Datum of 1983 (NAD83). The 2005 edition includes complete metadata. Town_Index.shp is in Shapefile format. Prior to 2005, this shapefile was named Town.shp.</srccontr>
+			</srcinfo>
+			<procstep><procdesc>Convert to GeoDatabase Feature Class format - Defined new Feature Class named Town_Index; and imported the attribute definitions, loaded features and imported metadata from Town_Index.shp shapefile. 
+
+Spatial Reference Properties for Feature Class:
+
+Coordinate System: NAD_1983_StatePlane_Connecticut_FIPS_0600_Feet
+XY Domain MinX: 100000; MaxX: 2247483.645
+XY Domain MinY: 200000; MaxY: 2347483.645
+Precision: 1000</procdesc><srcused>Source 2 - Town_Index.shp</srcused><proccont><cntinfo><cntorgp><cntorg>State of Connecticut, Department of Environmental Protection</cntorg><cntper>Howie Sternberg</cntper></cntorgp><cntaddr><addrtype>mailing and physical address</addrtype><address>79 Elm Street</address><city>Hartford</city><state>Connecticut</state><postal>06106</postal><country>USA</country></cntaddr><cntvoice>860-424-3540</cntvoice></cntinfo></proccont><procsv>ArcGIS 9.1</procsv><procdate>2006</procdate><srcprod>Source 3 - Town_Index</srcprod></procstep><srcinfo><srccitea>Source 3 - Town_Index</srccitea><srcscale>125000</srcscale><typesrc>disc</typesrc><srccontr>Town_Index is in GeoDatabase Feature Class format.</srccontr><srccite><citeinfo><title>Connecticut Town Index</title><origin>State of Connecticut, Department of Environmental Protection (data editor and publisher)</origin><onlink>http://www.ct.gov/deep</onlink><pubinfo><pubplace>Hartford, Connecticut, USA</pubplace><publish>State of Connecticut, Department of Environmental Protection</publish></pubinfo><origin>U.S Geological Survey, National Mapping Program (data compiler)</origin><pubdate>19860101</pubdate><edition>2005</edition><geoform>vector digital data</geoform></citeinfo></srccite><srctime><timeinfo><sngdate><caldate>1986</caldate></sngdate></timeinfo><srccurr>publication date</srccurr></srctime></srcinfo></lineage>
+		<complete>The completeness of the data  reflects the feature content of the data source, which a 1:125,000-scale planemetric map of Connecticut published by the U.S Geological Survey. This data is not updated.</complete>
+		<logic>Polygon features conform to the following topological rules. Polygons are single part. There are no duplicate polygons. Polygons do not self overlap. Polygons do not overlap other polygons. Establishment of logical consistency was orginally performed by the State of Connecticut, Department of Environmental Protection using ESRI ArcInfo software to manually create and control feature topology. The original minimum distance between vertices (ArcInfo Coverage fuzzy tolerance) and a minimum allowed overshoot length (ArcInfo Coverage dangle length) were not documented and unknown at the time this metadata was created in 2005. However, the original data was known to be topologically clean. After subsequently converting the data from ESRI ArcInfo Coverage to ESRI Shapefile format, no automated procedures or tests were performed to enforce the topology rules other than visual inspection.</logic>
+		<attracc>
+			<attraccr>All attributes have valid values. Values are within defined domains. The Town number and Town name polygon attributes were manually entered based information depicted on a map of the state of Connecticut.</attraccr>
+		</attracc>
+	</dataqual>
+</metadata>

@@ -90,6 +90,10 @@ dhr$retired <- recode(dhr$job, "1=0;2=0;3=1;4=0;5=0;6=0;7=0;else=NA", as.factor.
 dhr$volunteer3 <- ifelse(dhr$volunteer==1 | dhr$volunteer2==1, 1, 0)
 dhr$volunteer3 <- as.factor(dhr$volunteer3)
 
+# Output a recoded file for use elsewhere
+write.csv(dhr, "DataHavenRecoded.csv", row.names=FALSE, col.names=TRUE)
+save(dhr, file="DataHavenRecoded.Robj")
+
 # Find out which variables are missing many responses
 missing <- apply(dhr, 2, function(x) sum(is.na(x)))
 missing[missing >= 200]
