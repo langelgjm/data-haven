@@ -1,16 +1,21 @@
-# Test if necessary packages are installed, and load them
-required_packages <- c("rgdal", "lattice", "shiny", "ggplot2")
-required_packages_test <- sapply(required_packages, require, character.only=TRUE)
-if (any(ifelse(required_packages_test, FALSE, TRUE))) {
-  stop(paste("Missing package", required_packages[! required_packages_test], "\n"))
-} else {
-  print("Loaded all required packages.\n")
-}
+library(shiny)
+library(ggplot2)
+library(rgdal)
+library(lattice)
+
+# Test if necessary packages are installed, and load them; not necessary for shinyapps
+#required_packages <- c("rgdal", "lattice", "shiny", "ggplot2")
+#required_packages_test <- sapply(required_packages, require, character.only=TRUE)
+#if (any(ifelse(required_packages_test, FALSE, TRUE))) {
+#  stop(paste("Missing package", required_packages[! required_packages_test], "\n"))
+#} else {
+#  print("Loaded all required packages.\n")
+#}
 
 # Read survey data
-attach("DataHavenRecoded.Rdata")
+attach("data/DataHavenRecoded.Rdata")
 # Read GIS data
-ct <- readOGR(dsn="maps/Town_Index_shp", layer="TOWN_INDEX")
+ct <- readOGR(dsn="data/maps/Town_Index_shp", layer="TOWN_INDEX")
 # Subset GIS data to Greater New Haven area
 town_list <- c("Milford", "Orange", "Woodbridge", "Bethany", "Hamden", "North Haven", "North Branford", "Guilford", "Madison", "Branford", "East Haven", "New Haven", "West Haven")
 gnh <- ct[ct$TOWN %in% town_list,]

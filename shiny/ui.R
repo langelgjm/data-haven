@@ -1,8 +1,8 @@
 library(shiny)
 #TODO:
 # pretty names for grouping variable levels
-setwd("/Users/gjm/Documents/_Works in Progress/DataHaven/")
-source("shiny/helpers.R")
+#setwd("/Users/gjm/Documents/_Works in Progress/DataHaven/shiny/")
+source("helpers.R")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
